@@ -3,14 +3,15 @@ package server_client
 import (
 	"time"
 
+	"userapi/internal/interfaces"
 	"userapi/internal/models"
 )
 
 type Service struct {
-	repo *Repository
+	repo interfaces.UserRepository
 }
 
-func NewService(r *Repository) *Service {
+func NewService(r interfaces.UserRepository) *Service {
 	return &Service{repo: r}
 }
 
@@ -23,5 +24,5 @@ func (s *Service) GetUsers() ([]models.User, error) {
 }
 
 func (s *Service) GenerateReport(startDate, endDate time.Time, minAge, maxAge int) ([]models.User, int64, error) {
-	return s.repo.GetUsersByCriteria(startDate, endDate, minAge, maxAge)
+	return s.repo.GetUsersBy(startDate, endDate, minAge, maxAge)
 }

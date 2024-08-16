@@ -3,6 +3,7 @@ package server_client
 import (
 	"time"
 
+	"userapi/internal/interfaces"
 	"userapi/internal/models"
 
 	"gorm.io/gorm"
@@ -11,6 +12,8 @@ import (
 type Repository struct {
 	db *gorm.DB
 }
+
+var _ interfaces.UserRepository = &Repository{}
 
 func NewRepository(db *gorm.DB) *Repository {
 	return &Repository{db: db}
@@ -27,7 +30,7 @@ func (r *Repository) GetUsers() ([]models.User, error) {
 	return users, err
 }
 
-func (r *Repository) GetUsersByCriteria(startDate, endDate time.Time, minAge, maxAge int) ([]models.User, int64, error) {
+func (r *Repository) GetUsersBy(startDate, endDate time.Time, minAge, maxAge int) ([]models.User, int64, error) {
 	var users []models.User
 	query := r.db.Model(&models.User{})
 
