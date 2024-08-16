@@ -1,0 +1,2 @@
+[database]
+url = "postgres://userservice:userservice@db:5432/user-service?sslmode=disable"

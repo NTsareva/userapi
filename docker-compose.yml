@@ -1,0 +1,28 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:14-alpine
+    environment:
+      POSTGRES_USER: userservice
+      POSTGRES_PASSWORD: userservice
+      POSTGRES_DB: user-service
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./deploy:/docker-entrypoint-initdb.d/
+    container_name: userapi-db
+
+  app:
+    build: .
+    environment:
+      DATABASE_URL: "postgres://userservice:userservice@db:5432/user-service?sslmode=disable"
+    ports:
+      - "8081:8081"
+    depends_on:
+      - db
+    container_name: userapi-app
+
+volumes:
+  db_data:
